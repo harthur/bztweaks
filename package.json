@@ -1,0 +1,5 @@
+{
+  "description": "Tweaks bugzilla.mozilla.org with all the goodness that _should_ come out of the box",
+  "author" : "Ehsan Akhgari (http://ehsanakhgari.org/)",
+  "dependencies": ["jetpack-core"]
+}

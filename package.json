@@ -2,6 +2,7 @@
     "description": "Tweaks bugzilla.mozilla.org with all the goodness that _should_ come out of the box", 
     "license": "MPL", 
     "author": "Ehsan Akhgari (http://ehsanakhgari.org/) <ehsan@mozilla.com>", 
+    "contributors": ["Johnathan Nightingale (http://johnath.com) <johnath@mozilla.com>"],
     "url": "http://ehsanakhgari.org/mozilla/extensions/firefox/bugzilla-tweaks", 
     "version": "1.0", 
     "dependencies": [

@@ -1,5 +1,10 @@
 {
+  "fullName": "Bugzilla Tweaks",
   "description": "Tweaks bugzilla.mozilla.org with all the goodness that _should_ come out of the box",
-  "author" : "Ehsan Akhgari (http://ehsanakhgari.org/)",
+  "author": "Ehsan Akhgari (http://ehsanakhgari.org/) <ehsan@mozilla.com>",
+  "url": "http://ehsanakhgari.org/mozilla/extensions/firefox/bugzilla-tweaks",
+  "license": "MPL",
+  "id": "bugzillatweaks@ehsanakhgari.org",
+  "version": "1.0",
   "dependencies": ["jetpack-core"]
 }

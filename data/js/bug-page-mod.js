@@ -35,56 +35,9 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-exports.main = function(options, callback) {
-  require("tab-browser").whenContentLoaded(
-    function(window) {
-      if (onBugzillaPage(window)) {
-        tweakBugzilla(window.document);
-      }
-    }
-  );
-
-  // Allow toggling of CC event displays using a context menu entry
-  var contextMenu = require("context-menu");
-  var ccMenuItem = contextMenu.Item({
-    label: "Toggle CC History",
-    context: function(context) onBugzillaPage(context.window),
-    onClick: function(context) {
-      var style = context.document.getElementById("bztw_cc");
-      style.disabled = !style.disabled;
-    }
-  });
-  contextMenu.add(ccMenuItem);
-
-  var copyCheckinCommentItem = contextMenu.Item({
-    label: "Copy Check-in Comment",
-    context: function(context) {
-      if (!onBugzillaPage(context.window))
-        return false;
-      var d = context.document;
-      var message = d.getElementById("__bz_tw_checkin_comment");
-      return !!message;
-    },
-    onClick: function(context) {
-      var d = context.document;
-      var message = d.getElementById("__bz_tw_checkin_comment");
-      require("clipboard").set(message.textContent);
-    }
-  });
-  contextMenu.add(copyCheckinCommentItem);
-};
-
-function onBugzillaPage(window) {
-  if ("window" in window) {
-    window = window.window;
-  }
-  return window.location.protocol == "https:" &&
-         /bugzilla(-[a-zA-Z]+)*\.mozilla\.org/.test(window.location.href);
-}
-
 function tweakBugzilla(d) {
     // run on both bugzilla.m.o and bugzilla-stage-tip.m.o
-    if (!/bugzilla(-[a-zA-Z]+)*\.mozilla\.org/.test(d.location.href))
+    if (!onBugzillaPage(d.URL))
         return;
 
     // Put the quicksearch text in the quicksearch boxes
@@ -524,6 +477,7 @@ AttachmentFlag.prototype = {
 
 var reAttachmentDiff = /attachment\.cgi\?id=(\d+)&action=diff$/i;
 var reviewBoardUrlBase = "http://reviews.visophyte.org/";
+
 /**
  * Whenever we find a patch with a diff, insert an additional link to asuth's
  * review board magic.
@@ -1146,3 +1100,5 @@ function tbplbotSpamCollapser(d) {
   li.appendChild(a);
   collapseExpandBox.appendChild(li);
 }
+
+tweakBugzilla(document);

@@ -4,10 +4,7 @@
     "author": "Ehsan Akhgari (http://ehsanakhgari.org/) <ehsan@mozilla.com>", 
     "contributors": ["Johnathan Nightingale (http://johnath.com) <johnath@mozilla.com>"],
     "url": "http://ehsanakhgari.org/mozilla/extensions/firefox/bugzilla-tweaks", 
-    "version": "1.6", 
-    "dependencies": [
-        "jetpack-core"
-    ], 
+    "version": "1.6",
     "fullName": "Bugzilla Tweaks", 
     "id": "jid0-qBnIpLfDFa4LpdrjhAC6vBqN20Q"
 }

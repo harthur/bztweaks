@@ -50,6 +50,19 @@ function tweakBugzilla(d) {
     if (/^Bug /.test(d.title))
         d.title = d.title.slice(4);
 
+    // After POSTing, redirect with a GET back to the same bug
+    if (/\/(process_bug|attachment).cgi$/.test(d.location.href)) {
+      var bug = getBugId(d);
+      if (bug) {
+        d.body.innerHTML = "Changes submitted; reloading bug " + bug;
+        var url = d.location.href;
+        url = url.replace("process_bug.cgi", "show_bug.cgi");
+        url = url.replace("attachment.cgi", "show_bug.cgi");
+        url += "?id=" + bug;
+        d.location.href = url;
+      }
+    }
+
     // Make the comment box bigger
     var commentBox = d.querySelector("#comment");
     if (commentBox)
@@ -428,6 +441,15 @@ function transformType(str, doc, old, new_) {
         str = func.call(null, str, doc, old, new_);
     }
     return str;
+}
+
+function getBugId(d) {
+  var classes = d.body.classList;
+  for (var i = 0; i < classes.length; i++) {
+    var m = /^bz_bug_(\d+)$/.exec(classes[i]);
+    return m[1];
+  }
+  return undefined;
 }
 
 // new is a keyword, which makes this function uglier than I'd like

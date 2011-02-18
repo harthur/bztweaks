@@ -87,6 +87,8 @@ function tweakBugzilla(d) {
 
     attachmentDiffLinkify(d);
 
+    viewAttachmentSource(d);
+
     // Mark up history along right hand edge
     var historyLink = d.querySelector("link[title='Bug Activity']");
     if (!historyLink)
@@ -534,6 +536,70 @@ function attachmentDiffLinkify(doc) {
       linkNode.href = reviewBoardUrlBase + "r/bzpatch/bug" + bug_id + "/attach" + attach_id + "/";
       linkNode.textContent = "Review";
       parentNode.appendChild(linkNode);
+    }
+  }
+}
+
+var reAttachmentType = /,\s+([^ )]*)[;)]/;
+
+function viewAttachmentSource(doc) {
+  function addLink(elem, title, href) {
+    if (elem.textContent.match(/[\S]/)) {
+      elem.appendChild(doc.createTextNode(" | "));
+    }
+    var link = doc.createElement("a");
+    link.href = href;
+    link.textContent = title;
+    elem.appendChild(link);
+  }
+  var table = doc.getElementById("attachment_table");
+  if (!table)
+    return;
+  var rows = table.querySelectorAll("tr");
+  for (var i = 0; i < rows.length; ++i) {
+    var items = rows[i].querySelectorAll("td");
+    if (items.length != 3)
+      continue;
+    var links = items[0].querySelectorAll("a");
+    if (links.length == 0)
+      continue;
+    var attachHref = links[0].href;
+    // get the type of the attachment
+    var span = items[0].querySelector(".bz_attach_extra_info");
+    if (!span)
+      continue;
+    var typeName = null;
+    try {
+      // Match mime type followed by ";" (charset) or ")" (no charset)
+      typeName = span.textContent.match(reAttachmentType)[1];
+      typeName = typeName.split(";")[0]; // ignore charset following type
+    } catch (e) {}
+    if (typeName == "application/java-archive" ||
+        typeName == "application/x-jar") {
+      // Due to the fix for bug 369814, only zip files with this special
+      // mime type can be used with the jar: protocol.
+      // http://hg.mozilla.org/mozilla-central/rev/be54f6bb9e1e
+      addLink(items[2], "JAR Contents", "jar:" + attachHref + "!/");
+    // https://bugzilla.mozilla.org/show_bug.cgi?id=369814#c5 has more possible mime types for zips?
+    } else if (typeName == "application/zip" ||
+               typeName == "application/x-zip-compressed" ||
+               typeName == "application/x-xpinstall") {
+      addLink(items[2], "Static ZIP Contents", "jar:" + attachHref + "!/");
+    } else if (typeName != "text/plain" &&
+               typeName != "patch" &&
+               // Other types that Gecko displays like text/plain
+               // http://mxr.mozilla.org/mozilla-central/source/parser/htmlparser/public/nsIParser.h
+               typeName != "text/css" &&
+               typeName != "text/javascript" &&
+               typeName != "text/ecmascript" &&
+               typeName != "application/javascript" &&
+               typeName != "application/ecmascript" &&
+               typeName != "application/x-javascript" &&
+               // Binary image types for which the "source" is not useful
+               typeName != "image/gif" &&
+               typeName != "image/png" &&
+               typeName != "image/jpeg") {
+      addLink(items[2], "Source", "view-source:" + attachHref);
     }
   }
 }

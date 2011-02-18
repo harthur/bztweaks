@@ -85,8 +85,6 @@ function tweakBugzilla(d) {
     if (commentBox)
         commentBox.rows=20;
 
-    addAssignToSelfButton(d);
-
     attachmentDiffLinkify(d);
 
     // Mark up history along right hand edge
@@ -1071,33 +1069,6 @@ function htmlEncode(str) {
               .replace('<', '&lt;', 'g')
               .replace('>', '&gt;', 'g')
               .replace('"', '&quot;', 'g');
-}
-
-function addAssignToSelfButton(d) {
-  var userName = getUserName(d);
-  if (userName) {
-    // see if the bug is already assigned to the user
-    var assignee = d.getElementById("assigned_to");
-    if (assignee && assignee.value != userName) {
-      var button = d.createElement("input");
-      button.type = "button";
-      button.value = "Assign To Me";
-      button.addEventListener("click", function(e) {
-        e.preventDefault();
-        assignee.value = userName;
-        var reset = d.getElementById("set_default_assignee");
-        if (reset) {
-          reset.checked = false;
-        }
-        container.classList.add("bz_default_hidden");
-        d.getElementById("bz_assignee_input").classList.remove("bz_default_hidden");
-        assignee.focus();
-        button.removeEventListener("click", arguments.callee, false);
-      }, false);
-      var container = d.getElementById("bz_assignee_edit_container");
-      container.appendChild(button);
-    }
-  }
 }
 
 function tbplbotSpamCollapser(d) {

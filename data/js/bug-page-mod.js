@@ -65,8 +65,9 @@ function tweakBugzilla(d) {
         var timer = d.defaultView.setTimeout(function() {
           // don't redirect if the user is using the page (for now, we just see
           // if they have scrolled the page, in which case we assume that they
-          // are using the page.)
-          if (d.defaultView.scrollY > 0) {
+          // are using the page, or if they've selected anything on the page.)
+          if (d.defaultView.scrollY > 0 ||
+              d.defaultView.getSelection() == "") {
             cancelRedirection();
           } else {
             d.location.href = url;

@@ -58,8 +58,19 @@ function tweakBugzilla(d) {
         url = url.replace("process_bug.cgi", "show_bug.cgi");
         url = url.replace("attachment.cgi", "show_bug.cgi");
         url += "?id=" + bug;
+        function cancelRedirection() {
+          d.defaultView.clearTimeout(timer);
+          redirectMsg.parentNode.removeChild(redirectMsg);
+        }
         var timer = d.defaultView.setTimeout(function() {
-          d.location.href = url;
+          // don't redirect if the user is using the page (for now, we just see
+          // if they have scrolled the page, in which case we assume that they
+          // are using the page.)
+          if (d.defaultView.scrollY > 0) {
+            cancelRedirection();
+          } else {
+            d.location.href = url;
+          }
         }, 2000);
         var redirectMsg = d.createElement("div");
         redirectMsg.setAttribute("style", "font-weight: bold; text-align: center; border: 1px solid gray; margin: 10px 0; color: gray;");
@@ -69,8 +80,7 @@ function tweakBugzilla(d) {
         cancelLink.setAttribute("style", "color: black;");
         cancelLink.addEventListener("click", function(event) {
           event.preventDefault = true;
-          d.defaultView.clearTimeout(timer);
-          redirectMsg.parentNode.removeChild(redirectMsg);
+          cancelRedirection();
         }, false);
         cancelLink.appendChild(d.createTextNode("Cancel"));
         redirectMsg.appendChild(cancelLink);

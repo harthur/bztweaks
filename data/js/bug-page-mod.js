@@ -67,7 +67,7 @@ function tweakBugzilla(d) {
           // if they have scrolled the page, in which case we assume that they
           // are using the page, or if they've selected anything on the page.)
           if (d.defaultView.scrollY > 0 ||
-              d.defaultView.getSelection() == "") {
+              d.defaultView.getSelection().rangeCount > 0) {
             cancelRedirection();
           } else {
             d.location.href = url;

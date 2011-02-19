@@ -61,11 +61,16 @@ function tweakBugzilla(d) {
         function cancelRedirection() {
           d.defaultView.clearTimeout(timer);
           redirectMsg.parentNode.removeChild(redirectMsg);
+          d.body.removeEventListener("mousedown", interactionDetector, false);
+          d.body.removeEventListener("keydown", interactionDetector, false);
         }
+        function interactionDetector() {
+          cancelRedirection();
+        }
+        d.body.addEventListener("mousedown", interactionDetector, false);
+        d.body.addEventListener("keydown", interactionDetector, false);
         var timer = d.defaultView.setTimeout(function() {
-          // don't redirect if the user is using the page (for now, we just see
-          // if they have scrolled the page, in which case we assume that they
-          // are using the page, or if they've selected anything on the page.)
+          // don't redirect if the user is using the page.
           if (d.defaultView.scrollY > 0 ||
               d.defaultView.getSelection().rangeCount > 0) {
             cancelRedirection();

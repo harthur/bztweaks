@@ -101,6 +101,8 @@ function tweakBugzilla(d) {
     if (commentBox)
         commentBox.rows=20;
 
+    addNewLinks(d);
+
     attachmentDiffLinkify(d);
 
     viewAttachmentSource(d);
@@ -1151,6 +1153,31 @@ function htmlEncode(str) {
               .replace('<', '&lt;', 'g')
               .replace('>', '&gt;', 'g')
               .replace('"', '&quot;', 'g');
+}
+
+function addNewLinks(d) {
+    var product = d.querySelector("#field_container_product option[selected]");
+    var component = d.querySelector("#component option[selected]");
+
+    if (product) {
+        var label = d.getElementById('field_container_product');
+        var span = d.createElement('span');
+        var url = 'enter_bug.cgi?product=' + product.value;
+        span.innerHTML = "(<a href='" + url + "'>new</a>)";
+        if (label && span) {
+            label.appendChild(span);
+        }
+    }
+
+    if (product && component) {
+        var select = d.querySelector("select#component");
+        var span = d.createElement('span');
+        var url = 'enter_bug.cgi?product=' + product.value + '&component=' + component.value;
+        span.innerHTML = "(<a href='" + url + "'>new</a>)";
+        if (select && span) {
+            select.parentNode.appendChild(span);
+        }
+    }
 }
 
 function tbplbotSpamCollapser(d) {

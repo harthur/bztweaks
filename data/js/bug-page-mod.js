@@ -1160,37 +1160,37 @@ function addNewLinks(d) {
     var component = d.querySelector("#component option[selected]");
 
     if (product) {
-        var label = d.getElementById('field_container_product');
-        var url = 'enter_bug.cgi?product=' + encodeURIComponent(product.value);
-        span.innerHTML = "(<a href='" + url + "'>new</a>)";
-        if (label) {
-          label.appendChild(d.createTextNode("("));
-          var link = d.createElement('a');
-          link.href = url;
-          link.textContent = "new";
-          link.title = "File a new bug in the same Product";
-          var span = d.createElement('span');
-          span.appendChild(link);
-          label.appendChild(span);
-          label.appendChild(d.createTextNode(")"));
-        }
+      var label = d.getElementById('field_container_product');
+      var url = 'enter_bug.cgi?product=' + encodeURIComponent(product.value);
+      span.innerHTML = "(<a href='" + url + "'>new</a>)";
+      if (label) {
+        label.appendChild(d.createTextNode("("));
+        var link = d.createElement('a');
+        link.href = url;
+        link.textContent = "new";
+        link.title = "File a new bug in the same Product";
+        var span = d.createElement('span');
+        span.appendChild(link);
+        label.appendChild(span);
+        label.appendChild(d.createTextNode(")"));
+      }
     }
 
     if (product && component) {
-        var select = d.querySelector("select#component");
-        var label = select.parentNode;
-        var url = 'enter_bug.cgi?product=' + encodeURIComponent(product.value) + '&component=' + encodeURIComponent(component.value);
-        if (label) {
-          label.appendChild(d.createTextNode("("));
-          var link = d.createElement('a');
-          link.href = url;
-          link.textContent = "new";
-          link.title = "File a new bug in the same Product and Component";
-          var span = d.createElement('span');
-          span.appendChild(link);
-          label.appendChild(span);
-          label.appendChild(d.createTextNode(")"));
-        }
+      var select = d.querySelector("select#component");
+      var label = select.parentNode;
+      var url = 'enter_bug.cgi?product=' + encodeURIComponent(product.value) + '&component=' + encodeURIComponent(component.value);
+      if (label) {
+        label.appendChild(d.createTextNode("("));
+        var link = d.createElement('a');
+        link.href = url;
+        link.textContent = "new";
+        link.title = "File a new bug in the same Product and Component";
+        var span = d.createElement('span');
+        span.appendChild(link);
+        label.appendChild(span);
+        label.appendChild(d.createTextNode(")"));
+      }
     }
 }
 

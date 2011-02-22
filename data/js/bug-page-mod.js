@@ -1162,7 +1162,7 @@ function addNewLinks(d) {
     if (product) {
         var label = d.getElementById('field_container_product');
         var span = d.createElement('span');
-        var url = 'enter_bug.cgi?product=' + product.value;
+        var url = 'enter_bug.cgi?product=' + encodeURIComponent(product.value);
         span.innerHTML = "(<a href='" + url + "'>new</a>)";
         if (label && span) {
             label.appendChild(span);
@@ -1172,7 +1172,7 @@ function addNewLinks(d) {
     if (product && component) {
         var select = d.querySelector("select#component");
         var span = d.createElement('span');
-        var url = 'enter_bug.cgi?product=' + product.value + '&component=' + component.value;
+        var url = 'enter_bug.cgi?product=' + encodeURIComponent(product.value) + '&component=' + encodeURIComponent(component.value);
         span.innerHTML = "(<a href='" + url + "'>new</a>)";
         if (select && span) {
             select.parentNode.appendChild(span);

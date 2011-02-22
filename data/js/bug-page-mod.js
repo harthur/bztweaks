@@ -594,7 +594,7 @@ function quicksearchHandler(doc) {
   var win = doc.defaultView;
   var match = /quicksearch=([^&]+)/i.exec(win.location.search);
   if (match) {
-    var quicksearch = unescape(match[1].replace('+', ' '));
+    var quicksearch = unescape(match[1].replace('+', ' ', 'g'));
     var quicksearchBox = doc.querySelectorAll("input[name=quicksearch]");
     if (quicksearchBox) {
       for (var i = 0; i < quicksearchBox.length; ++i) {

@@ -51,48 +51,16 @@ function tweakBugzilla(d) {
         d.title = d.title.slice(4);
 
     // After POSTing, redirect with a GET back to the same bug
-    if (/\/(process_bug|attachment).cgi$/.test(d.location.href)) {
+    if (/\/(process_bug|attachment|post_bug).cgi$/.test(d.location.href)) {
       var bug = getBugNumber(d);
       if (bug) {
         var url = d.location.href;
         url = url.replace("process_bug.cgi", "show_bug.cgi");
         url = url.replace("attachment.cgi", "show_bug.cgi");
+        url = url.replace("post_bug.cgi", "show_bug.cgi");
         url += "?id=" + bug;
-        function cancelRedirection() {
-          d.defaultView.clearTimeout(timer);
-          redirectMsg.parentNode.removeChild(redirectMsg);
-          d.body.removeEventListener("mousedown", interactionDetector, false);
-          d.body.removeEventListener("keydown", interactionDetector, false);
-        }
-        function interactionDetector() {
-          cancelRedirection();
-        }
-        d.body.addEventListener("mousedown", interactionDetector, false);
-        d.body.addEventListener("keydown", interactionDetector, false);
-        var timer = d.defaultView.setTimeout(function() {
-          // don't redirect if the user is using the page.
-          if (d.defaultView.scrollY > 0 ||
-              d.defaultView.getSelection().rangeCount > 0) {
-            cancelRedirection();
-          } else {
-            d.location.href = url;
-          }
-        }, 2000);
-        var redirectMsg = d.createElement("div");
-        redirectMsg.setAttribute("style", "font-weight: bold; text-align: center; border: 1px solid gray; margin: 10px 0; color: gray;");
-        redirectMsg.appendChild(d.createTextNode("Changes submitted, reloading bug " + bug + " in 2 seconds... ("));
-        var cancelLink = d.createElement("a");
-        cancelLink.setAttribute("href", "javascript:void(0)");
-        cancelLink.setAttribute("style", "color: black;");
-        cancelLink.addEventListener("click", function(event) {
-          event.preventDefault = true;
-          cancelRedirection();
-        }, false);
-        cancelLink.appendChild(d.createTextNode("Cancel"));
-        redirectMsg.appendChild(cancelLink);
-        redirectMsg.appendChild(d.createTextNode(")"));
-        var header = d.getElementById("header");
-        header.insertBefore(redirectMsg, header.firstChild);
+        d.defaultView.history.replaceState(null, "", url);
+        d.title = bug + " - " + d.getElementById("short_desc_nonedit_display").textContent;
       }
     }
 

@@ -1162,7 +1162,6 @@ function addNewLinks(d) {
   if (product) {
     var label = d.getElementById('field_container_product');
     var url = 'enter_bug.cgi?product=' + encodeURIComponent(product.value);
-    span.innerHTML = "(<a href='" + url + "'>new</a>)";
     if (label) {
       label.appendChild(d.createTextNode("("));
       var link = d.createElement('a');

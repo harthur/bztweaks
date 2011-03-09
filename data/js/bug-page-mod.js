@@ -1170,7 +1170,7 @@ function tbplbotSpamCollapser(d) {
   a.href = "#";
   a.addEventListener("click", function(e) {
     e.preventDefault();
-    var win = d.defaultView.wrappedJSObject;
+    var win = d.defaultView;
     var comments = d.querySelectorAll(".bz_comment");
     for (var i = 0; i < comments.length; ++i) {
       var comment = comments[i];
